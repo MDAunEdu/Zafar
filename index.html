@@ -17,13 +17,16 @@
 
     #pdf-viewer {
       width: 100%;
-      height: 100vh;
+      height: 100%;
       overflow-y: auto;
+      display: flex;
+      flex-direction: column;
     }
 
     canvas {
       display: block;
-      margin-bottom: 10px;
+      margin-bottom: 20px;
+      width: 100%;
     }
   </style>
 </head>
@@ -37,15 +40,16 @@
     const viewer = document.getElementById('pdf-viewer');
 
     pdfjsLib.getDocument(url).promise.then(function(pdf) {
-      for (let pageNum = 1; pageNum <= pdf.numPages; pageNum++) {
+      const scale = 2.0;  // Increase scale for better resolution
+      const renderPage = (pageNum) => {
         pdf.getPage(pageNum).then(function(page) {
           const canvas = document.createElement('canvas');
           const context = canvas.getContext('2d');
-          const viewport = page.getViewport({ scale: 1.5 });  // Adjust scale for quality and size
-          
+          const viewport = page.getViewport({ scale: scale });
+
           canvas.height = viewport.height;
           canvas.width = viewport.width;
-          
+
           page.render({
             canvasContext: context,
             viewport: viewport
@@ -53,7 +57,22 @@
             viewer.appendChild(canvas);  // Add the rendered page to the viewer
           });
         });
-      }
+      };
+
+      // Render pages sequentially
+      let currentPage = 1;
+      renderPage(currentPage);  // Start by rendering the first page
+
+      // Add event listener to load the next page when scrolling
+      viewer.addEventListener('scroll', function() {
+        const lastCanvas = viewer.lastElementChild;
+        if (lastCanvas && lastCanvas.getBoundingClientRect().bottom <= window.innerHeight) {
+          currentPage++;
+          if (currentPage <= pdf.numPages) {
+            renderPage(currentPage);
+          }
+        }
+      });
     });
   </script>
 
