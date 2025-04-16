@@ -5,43 +5,42 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>My CV</title>
   <style>
-    html, body {
+    * {
+      box-sizing: border-box;
+    }
+    
+    body {
       margin: 0;
-      height: 100%;
-      overflow: hidden;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      font-family: Arial, sans-serif;
     }
-    embed {
-      width: 100%;
-      height: 100%;
-      border: none;
-    }
-  </style>
-</head>
-<body>
-  <embed src="Father.pdf" type="application/pdf" />
-</body>
-</html>
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>My CV</title>
-  <style>
-    html, body {
-      margin: 0;
-      height: 100%;
-      overflow: hidden;
+    .pdf-container {
+      flex: 1;
+      width: 100%;
     }
+
     embed {
       width: 100%;
       height: 100%;
       border: none;
     }
+
+    @media (max-width: 600px) {
+      .top-bar {
+        padding: 15px;
+        text-align: center;
+      }
+    }
   </style>
 </head>
 <body>
-  <embed src="Father.pdf" type="application/pdf" />
+
+  <div class="pdf-container">
+    <embed src="cv.pdf" type="application/pdf" />
+  </div>
+
 </body>
 </html>
