@@ -1,2 +1,0 @@
-# Zafar
-CV for Zafar
