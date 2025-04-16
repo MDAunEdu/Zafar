@@ -3,48 +3,52 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>My CV</title>
+  <title>Mohammad Zafar's CV</title>
   <style>
-    * {
-      box-sizing: border-box;
-    }
-    
     body {
       margin: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
       height: 100vh;
-      display: flex;
-      flex-direction: column;
-      font-family: Arial, sans-serif;
-      overflow: hidden;
     }
-
-    .pdf-container {
-      flex: 1;
+    #pdf-viewer {
       width: 100%;
-      overflow: auto;  /* Allow scrolling */
-      display: flex;
-      justify-content: center;  /* Center the PDF */
-    }
-
-    embed {
-      width: auto;  /* Keep original width */
-      height: 100vh;  /* Full viewport height */
-      max-width: 100%;  /* Don't exceed the screen width */
-    }
-
-    @media (max-width: 600px) {
-      embed {
-        width: 100%;  /* Make the PDF fit the screen on small devices */
-        height: auto;  /* Let the height adjust based on width */
-      }
+      height: 100%;
+      overflow: auto;
     }
   </style>
 </head>
 <body>
 
-  <div class="pdf-container">
-    <embed src="cv.pdf" type="application/pdf" />
-  </div>
+  <div id="pdf-viewer"></div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.10.377/pdf.min.js"></script>
+  <script>
+    const url = 'Father.pdf'; // Path to your PDF file
+
+    const viewer = document.getElementById('pdf-viewer');
+
+    pdfjsLib.getDocument(url).promise.then(function(pdf) {
+      for (let i = 1; i <= pdf.numPages; i++) {
+        pdf.getPage(i).then(function(page) {
+          const canvas = document.createElement('canvas');
+          const context = canvas.getContext('2d');
+          const viewport = page.getViewport({ scale: 1 });
+          
+          canvas.height = viewport.height;
+          canvas.width = viewport.width;
+          
+          page.render({
+            canvasContext: context,
+            viewport: viewport
+          }).promise.then(function() {
+            viewer.appendChild(canvas);
+          });
+        });
+      }
+    });
+  </script>
 
 </body>
 </html>
