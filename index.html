@@ -13,12 +13,35 @@
       background: #f8f8f8;
       font-family: sans-serif;
     }
+
+    .download-container {
+      text-align: center;
+      padding: 15px;
+      background-color: #fff;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+      position: sticky;
+      top: 0;
+      z-index: 10;
+    }
+
+    .download-btn {
+      background-color: #4CAF50;
+      color: white;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 8px;
+      font-size: 16px;
+      cursor: pointer;
+      text-decoration: none;
+    }
+
     #pdf-viewer {
       padding: 10px;
       display: flex;
       flex-direction: column;
       align-items: center;
     }
+
     canvas {
       width: 100%;
       max-width: 800px;
@@ -28,6 +51,10 @@
   </style>
 </head>
 <body>
+  <div class="download-container">
+    <a href="Father.pdf" download class="download-btn">⬇ Download PDF</a>
+  </div>
+
   <div id="pdf-viewer">Loading PDF...</div>
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.4.120/pdf.min.js"></script>
@@ -36,7 +63,7 @@
     const container = document.getElementById('pdf-viewer');
 
     pdfjsLib.getDocument(url).promise.then(pdf => {
-      container.innerHTML = ''; // clear "loading" text
+      container.innerHTML = '';
       for (let pageNumber = 1; pageNumber <= pdf.numPages; pageNumber++) {
         pdf.getPage(pageNumber).then(page => {
           const viewport = page.getViewport({ scale: 1.2 });
