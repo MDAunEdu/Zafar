@@ -2,13 +2,16 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes"/>
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1, maximum-scale=5, user-scalable=yes"
+  />
   <title>Father CV</title>
   <style>
     body {
       margin: 0;
+      background: #f8f8f8;
       font-family: sans-serif;
-      background: #f0f0f0;
     }
     #pdf-viewer {
       padding: 10px;
@@ -17,10 +20,10 @@
       align-items: center;
     }
     canvas {
-      max-width: 100%;
-      height: auto;
-      margin-bottom: 10px;
-      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+      width: 100%;
+      max-width: 800px;
+      margin: 10px 0;
+      box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
     }
   </style>
 </head>
@@ -29,23 +32,23 @@
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.4.120/pdf.min.js"></script>
   <script>
-    const url = 'Father.pdf'; // PDF file name
-
+    const url = 'Father.pdf';
     const container = document.getElementById('pdf-viewer');
 
     pdfjsLib.getDocument(url).promise.then(pdf => {
-      container.innerHTML = ''; // Clear "Loading" text
+      container.innerHTML = ''; // clear "loading" text
       for (let pageNumber = 1; pageNumber <= pdf.numPages; pageNumber++) {
         pdf.getPage(pageNumber).then(page => {
-          const viewport = page.getViewport({ scale: 1.5 });
+          const viewport = page.getViewport({ scale: 1.2 });
           const canvas = document.createElement('canvas');
           const context = canvas.getContext('2d');
 
           canvas.height = viewport.height;
           canvas.width = viewport.width;
 
-          page.render({ canvasContext: context, viewport: viewport });
-          container.appendChild(canvas);
+          page.render({ canvasContext: context, viewport: viewport }).promise.then(() => {
+            container.appendChild(canvas);
+          });
         });
       }
     }).catch(error => {
