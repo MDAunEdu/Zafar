@@ -1,80 +1,24 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=3.0, user-scalable=yes"/>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>My CV</title>
   <style>
-    body {
+    html, body {
       margin: 0;
-      display: flex;
-      justify-content: center;
-      align-items: flex-start;
-      font-family: Arial, sans-serif;
-      height: 100vh;
+      padding: 0;
+      height: 100%;
       overflow: hidden;
     }
-
-    #pdf-viewer {
+    iframe {
       width: 100%;
       height: 100%;
-      overflow-y: auto;
-      display: flex;
-      flex-direction: column;
-    }
-
-    canvas {
-      display: block;
-      margin-bottom: 20px;
-      width: 100%;
+      border: none;
     }
   </style>
 </head>
 <body>
-
-  <div id="pdf-viewer"></div>
-
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.10.377/pdf.min.js"></script>
-  <script>
-    const url = 'Father.pdf'; // Path to your PDF file
-    const viewer = document.getElementById('pdf-viewer');
-
-    pdfjsLib.getDocument(url).promise.then(function(pdf) {
-      const scale = 2.0;  // Increase scale for better resolution
-      const renderPage = (pageNum) => {
-        pdf.getPage(pageNum).then(function(page) {
-          const canvas = document.createElement('canvas');
-          const context = canvas.getContext('2d');
-          const viewport = page.getViewport({ scale: scale });
-
-          canvas.height = viewport.height;
-          canvas.width = viewport.width;
-
-          page.render({
-            canvasContext: context,
-            viewport: viewport
-          }).promise.then(function() {
-            viewer.appendChild(canvas);  // Add the rendered page to the viewer
-          });
-        });
-      };
-
-      // Render pages sequentially
-      let currentPage = 1;
-      renderPage(currentPage);  // Start by rendering the first page
-
-      // Add event listener to load the next page when scrolling
-      viewer.addEventListener('scroll', function() {
-        const lastCanvas = viewer.lastElementChild;
-        if (lastCanvas && lastCanvas.getBoundingClientRect().bottom <= window.innerHeight) {
-          currentPage++;
-          if (currentPage <= pdf.numPages) {
-            renderPage(currentPage);
-          }
-        }
-      });
-    });
-  </script>
-
+  <iframe src="Father.pdf"></iframe>
 </body>
 </html>
